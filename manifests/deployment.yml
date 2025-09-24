@@ -17,7 +17,8 @@ spec:
           image: webappspacegame.azurecr.io/web
           ports:
           - containerPort: 80
-      imagePullSecrets: []
+      imagePullSecrets:
+        - name: secret
 ---
 apiVersion : apps/v1
 kind: Deployment
@@ -38,5 +39,7 @@ spec:
           image: webappspacegame.azurecr.io/leaderboard
           ports:
           - containerPort: 80
-      imagePullSecrets: []
+      imagePullSecrets:
+        - name: secret
+
 
