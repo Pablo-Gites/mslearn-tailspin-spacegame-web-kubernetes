@@ -98,3 +98,9 @@ stages:
               containers: |
                 web=$(RegistryName)/$(webRepository):$(tag)
                 leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag)
+
+          - script: |
+              echo "Forcing image update with kubectl set image..."
+              kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
+              kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
+            displayName: "Force update images"
