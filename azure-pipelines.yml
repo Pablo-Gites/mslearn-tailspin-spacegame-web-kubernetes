@@ -81,16 +81,17 @@ stages:
               echo "Full leaderboard image = $(RegistryName)/$(leaderboardRepository):$(tag)"
             displayName: "Debug: print resolved image variables"
 
-          - task: Kubernetes@1
+          - task: AzureCLI@2
             displayName: "Force update images"
             inputs:
-              connectionType: Kubernetes Service Connection
-              kubernetesServiceEndpoint: 'Kubernetes Cluster Connection'
-              namespace: 'default'
-              command: set
-              arguments: >
-                image deployment/web web=$(RegistryName)/$(webRepository):$(tag)
-                image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag)
+              azureSubscription: 'Kubernetes Cluster Connection'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az aks get-credentials --resource-group RG-AppSvc-WE --name AKS-webappspacegame --overwrite-existing
+                kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
+                kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
+
 
       
           
