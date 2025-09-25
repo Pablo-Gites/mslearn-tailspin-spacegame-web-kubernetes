@@ -71,33 +71,17 @@ stages:
               azureResourceGroup: 'RG-AppSvc-WE'
               kubernetesCluster: 'AKS-webappspacegame'
               namespace: 'default'
-    
-          - script: |
-              echo "RegistryName = $(RegistryName)"
-              echo "webRepository = $(webRepository)"
-              echo "leaderboardRepository = $(leaderboardRepository)"
-              echo "tag = $(tag)"
-              echo "Full web image = $(RegistryName)/$(webRepository):$(tag)"
-              echo "Full leaderboard image = $(RegistryName)/$(leaderboardRepository):$(tag)"
-            displayName: "Debug: print resolved image variables"
 
-          - task: KubernetesManifest@1
-            displayName: Deploy to Kubernetes cluster
+          - task: AzureCLI@2
+            displayName: "Force update images"
             inputs:
-              action: deploy
-              connectionType: azureResourceManager
-              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
-              azureResourceGroup: 'RG-AppSvc-WE'
-              kubernetesCluster: 'AKS-webappspacegame'
-              namespace: 'default'
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: 
-                $(RegistryName)/$(webRepository):$(tag)
-                $(RegistryName)/$(leaderboardRepository):$(tag)
+              azureSubscription: 'Kubernetes Cluster Connection'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az aks get-credentials --resource-group RG-AppSvc-WE --name AKS-webappspacegame --overwrite-existing
+                kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
+                kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
 
 
 
