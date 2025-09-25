@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: webappspacegame.azurecr.io/web
+          image: webappspacegame.azurecr.io/web:247
           ports:
           - containerPort: 80
       imagePullSecrets:
@@ -36,10 +36,11 @@ spec:
     spec:
       containers:
         - name: leaderboard
-          image: webappspacegame.azurecr.io/leaderboard
+          image: webappspacegame.azurecr.io/leaderboard:247
           ports:
           - containerPort: 80
       imagePullSecrets:
         - name: secret
+
 
 
