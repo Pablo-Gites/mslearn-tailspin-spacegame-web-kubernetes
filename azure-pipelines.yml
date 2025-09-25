@@ -83,8 +83,8 @@ stages:
                 kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
                 kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Build.SourcesDirectory)/manifests/deployment.yml
+                $(Build.SourcesDirectory)/manifests/service.yml
 
 
 
