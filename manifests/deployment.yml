@@ -17,6 +17,9 @@ spec:
           image: webappspacegame.azurecr.io/web:latest
           ports:
           - containerPort: 5000
+          env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:5000"
       imagePullSecrets:
         - name: secret
 ---
@@ -39,8 +42,12 @@ spec:
           image: webappspacegame.azurecr.io/leaderboard:latest
           ports:
           - containerPort: 8080
+          env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:8080"
       imagePullSecrets:
         - name: secret
+
 
 
 
