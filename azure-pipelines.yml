@@ -82,6 +82,8 @@ stages:
                 az aks get-credentials --resource-group RG-AppSvc-WE --name AKS-webappspacegame --overwrite-existing
                 kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
                 kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
+                kubectl apply -f $(Build.SourcesDirectory)/manifests/deployment.yml
+                kubectl apply -f $(Build.SourcesDirectory)/manifests/service.yml
               manifests: |
                 $(Build.SourcesDirectory)/manifests/deployment.yml
                 $(Build.SourcesDirectory)/manifests/service.yml
