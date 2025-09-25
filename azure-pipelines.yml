@@ -104,3 +104,4 @@ stages:
               kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
               kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
             displayName: "Force update images"
+            condition: always()
