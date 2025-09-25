@@ -2,6 +2,7 @@ trigger: none
 
 variables:
   buildConfiguration: 'Release'
+  RegistryName: 'webappspacegame.azurecr.io'
   webRepository: 'web'
   leaderboardRepository: 'leaderboard'
   tag: '$(Build.BuildId)'
