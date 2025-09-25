@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: webappspacegame.azurecr.io/web:$(tag)
+          image: webappspacegame.azurecr.io/web:latest
           ports:
           - containerPort: 5000
           env:
@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: leaderboard
-          image: webappspacegame.azurecr.io/leaderboard:$(tag)
+          image: webappspacegame.azurecr.io/leaderboard:latest
           ports:
           - containerPort: 8080
           env:
@@ -47,6 +47,7 @@ spec:
             value: "http://0.0.0.0:8080"
       imagePullSecrets:
         - name: secret
+
 
 
 
