@@ -72,16 +72,23 @@ stages:
               kubernetesCluster: 'AKS-webappspacegame'
               namespace: 'default'
 
-          - task: AzureCLI@2
-            displayName: "Force update images"
+          - task: KubernetesManifest@1
+            displayName: Deploy leaderboard to Kubernetes cluster
             inputs:
-              azureSubscription: 'Kubernetes Cluster Connection'
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az aks get-credentials --resource-group RG-AppSvc-WE --name AKS-webappspacegame --overwrite-existing
-                kubectl set image deployment/web web=$(RegistryName)/$(webRepository):$(tag) --namespace default
-                kubectl set image deployment/leaderboard leaderboard=$(RegistryName)/$(leaderboardRepository):$(tag) --namespace default
+              action: deploy
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: 'Kubernetes Cluster Connection'
+              azureResourceGroup: 'RG-AppSvc-WE'
+              kubernetesCluster: 'AKS-webappspacegame'
+              namespace: 'default'
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: 
+                $(RegistryName)/$(leaderboardRepository):$(tag)
+
 
 
 
